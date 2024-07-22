@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <title>Mangluxe Voyages</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylebd2.css') }}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-line">
+                <div class="left">
+                    <h1>Пользователь: GP912</h1>
+                </div>
+                <div class="center"> <!-- Элемент по центру -->
+                    <div class="logo">
+                        <h1>Mangluxe Voyages</h1>
+                    </div>
+                </div>
+                <div class="right"> <!-- Элемент справа -->
+                    <div class="btn-exit">
+                        <a href="{{ url_for('index') }}">Выход</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="main-work">
+        <div class="wrapper">
+            <h1>Таблицы</h1>
+            <form  class="btn-table" action="/query" method="POST">
+                <button  type="submit" name="query" value="Tour" >Туры</button>
+                <button  type="submit" name="query" value="Sale" >Скидки</button>
+                <button  type="submit" name="query" value="Hostels" >Отели</button>
+                <button  type="submit" name="query" value="Orders" >Заказы</button>
+                <button  type="submit" name="query" value="Clients" >Клиенты</button>
+                <button  type="submit" name="query" value="Comments" >Комментарии</button>
+            </form>
+          
+         </div>
+         <div class="wrapper-table">
+            <h1>Таблица</h1>
+            <table>
+
+                <tr>
+                    {% for column in columns %}
+                        <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+                {% for row in rows %}
+                    <tr>
+                        {% for cell in row %}
+                            <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+  
+    </div>
+</body>
+</html>

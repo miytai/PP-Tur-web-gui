@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <title>Mangluxe Voyages</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylebd.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-line">
+                <div class="left">
+                    <h1>Пользователь: GP012</h1>
+                </div>
+                <div class="center"> <!-- Элемент по центру -->
+                    <div class="logo">
+                        <h1>Mangluxe Voyages</h1>
+                    </div>
+                </div>
+                <div class="right"> <!-- Элемент справа -->
+                    <div class="btn-exit">
+                        <a href="{{ url_for('index') }}">Выйти</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="main-work">
+        <div class="wrapper">
+            <h1>Таблицы</h1>
+            <form  class="btn-table" action="/query" method="POST">
+                <button  type="submit" name="query" value="Tour" >Туры</button>
+                <button  type="submit" name="query" value="Sale" >Скидки</button>
+                <button  type="submit" name="query" value="Hostels" >Отели</button>
+                <button  type="submit" name="query" value="Orders" >Заказы</button>
+                <button  type="submit" name="query" value="Clients" >Клиенты</button>
+                <button  type="submit" name="query" value="Comments" >Комментарии</button>
+            </form>
+            <div class="input-box">
+            <form action="/execute_query" method="post">
+                <h1>Запросы</h1>
+                <textarea name="sql_query" placeholder="Query SQL //SELECT * FROM TABLE1;"></textarea><br><br>
+                <input type="submit" value="Выполнить запрос">
+            </form>
+            </div>
+            <div class="del-form">
+                <h1>Удалить запись</h1>
+            <form action="/delete_row" method="post">
+                <select name="table_name">
+                    <option value="Turi">Туры</option>
+                    <option value="Clients">Клиенты</option>
+                    <option value="Comments">Комментарии</option>
+                    <option value="Orders">Заказы</option>
+                    <option value="Hostels">Отели</option>
+                    <option value="Sale">Скидки</option>
+                </select>
+                <input type="text" name="row_id" placeholder="ID записи">
+                <input type="submit" value="Удалить">
+            </form>
+            <h1>Новая запись</h1>
+            <button id="modalBtn">Добавить запись</button>
+            <div class="procedur">
+                <h1>Процедуры и запросы</h1>
+                <form action="/opion" method="post">
+                <select name="procedure">
+                    <option value="join2">join2</option>
+                    <option value="join2">SelectDate2</option>
+                    <option value="join2">join3</option>
+                </select>
+                <button type="submit">Отправить</button>
+                </form>
+            </div>
+            </div>
+         </div>
+         <div class="wrapper-table">
+            <h1>Таблица</h1>
+            <table>
+                <tr>
+                    {% for column in columns %}
+                        <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+                {% for row in rows %}
+                    <tr>
+                        {% for cell in row %}
+                            <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+            <script>
+                var tds = document.querySelectorAll('td');
+                for (var i = 0; i < tds.length; i++) {
+                    tds[i].addEventListener('click', function func() {
+                        var input = document.createElement('input');
+                        input.value = this.innerHTML;
+                        this.innerHTML = '';
+                        this.appendChild(input);
+                        var td = this;
+                        input.addEventListener('blur', function () {
+                            td.innerHTML = this.value;
+                            td.addEventListener('click', func);
+                        });
+                        this.removeEventListener('click', func);
+                    });
+                }
+            </script>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h1>Добавить запись в таблицу</h1>
+          <button onclick="showInputs('html')">Туры</button>
+        <button onclick="showInputs('css')">Скидки</button>
+        <button onclick="showInputs('js')">Отели</button>
+        <button onclick="showInputs('flask')">Заказы</button>
+        <button onclick="showInputs('py')">Клиент</button>
+        <button onclick="showInputs('csharp')">Комментарии</button>
+        <button onclick="hideInputs()">Скрыть</button>
+	<br><br>
+    <div id="csharp_inputs" style="display:none;">
+        <h2>Таблица Комментарии</h2>
+        <form action="/add_assessment" method="post">
+		<input type="text" name="client" placeholder="Client">
+		<input type="text" name="comment" placeholder="Comment">
+		<input type="text" name="assessment" placeholder="Assessment">
+        <input type="date" name="date_com" placeholder="DateCom">
+        <button type="submit">Добавить</button>
+        </form>
+	</div>
+    <div id="py_inputs" style="display:none;">
+        <h2>Таблица Клиенты</h2>
+        <form action="add_assessment1" method="post">
+		<input type="text" name="surname" placeholder="Surename">
+		<input type="text" name="name" placeholder="Name">
+		<input type="text" name="secondname" placeholder="SecondName">
+        <input type="text" name="pasport" placeholder="Pasport">
+        <input type="text" name="number" placeholder="Number">
+        <input type="text" name="email" placeholder="Email">
+        <button type="submit">Добавить</button>
+    </form>
+	</div>
+	<div id="html_inputs" style="display:none;">
+        <h2>Таблица Туры</h2>
+        <form action="/add_assessment2'" method="post">
+		<input type="text" name="hotel" placeholder="Hotel">
+		<input type="text" name="titletour" placeholder="TitleTour">
+		<input type="date" name="datestart1" placeholder="DateStart">
+        <input type="date" name="dateend1" placeholder="DateEnd">
+        <input type="text" name="category" placeholder="Category">
+        <input type="text" name="price" placeholder="Price">
+        <button type="submit">Добавить</button>
+        </form>
+	</div>
+	<div id="css_inputs" style="display:none;">
+        <h2>Таблица Скидки</h2>
+        <form action="/add_assessment3'" method="post">
+		<input type="text" name="titlesale" placeholder="TitleSale">
+		<input type="text" name="size" placeholder="Size">
+		<input type="date" name="datestart2" placeholder="DateStart">
+        <input type="date" name="dateend2" placeholder="DateEnd">
+        <button type="submit">Добавить</button>
+        </form>
+	</div>
+	<div id="js_inputs" style="display:none;">
+        <h2>Таблица Отели</h2>
+        <form action="/add_assessment4'" method="post">
+		<input type="text" name="titlehostel" placeholder="Title">
+		<input type="text" name="country" placeholder="Country">
+		<input type="text" name="city" placeholder="City">
+        <input type="text" name="typyfood" placeholder="TypeFood">
+        <input type="text" name="distair" placeholder="DistanseAirport">
+        <input type="text" name="distbec" placeholder="DistanseBeach">
+        <input type="text" name="distsea" placeholder="DistanseSea">
+        <input type="text" name="service" placeholder="Service">
+        <input type="text" name="categ" placeholder="Category">
+        <input type="text" name="prc" placeholder="Price">
+        <button type="submit">Добавить</button>
+        </form>
+	</div>
+	<div id="flask_inputs" style="display:none;">
+		<h2>Таблица Заказы</h2>
+        <form action="/add_assessment5'" method="post">
+		<input type="text" name="clt" placeholder="Client">
+		<input type="text" name="tr" placeholder="Tour">
+		<input type="text" name="sts" placeholder="Status">
+        <input type="date" name="db" placeholder="DateBron">
+        <input type="text" name="sl" placeholder="Sale">
+        <button type="submit">Добавить</button>
+        </form>
+	</div>
+	<script>
+		function showInputs(language) {
+			document.getElementById(language+"_inputs").style.display = "block";
+		}
+		function hideInputs() {
+			document.getElementById("html_inputs").style.display = "none";
+			document.getElementById("css_inputs").style.display = "none";
+			document.getElementById("js_inputs").style.display = "none";
+			document.getElementById("flask_inputs").style.display = "none";
+            document.getElementById("py_inputs").style.display = "none";
+            document.getElementById("csharp_inputs").style.display = "none";
+		}
+	</script>
+        </div>
+      </div>
+      <script>
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("modalBtn");
+        var span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function() {
+        modal.style.display = "block";
+        }
+        span.onclick = function() {
+        modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+        }
+    </script>
+</body>
+</html>
